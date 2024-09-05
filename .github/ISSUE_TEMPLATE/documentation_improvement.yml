@@ -1,0 +1,27 @@
+name: 📝 Documentation Improvement
+description: Suggest an improvement or addition to the documentation
+title: "[Docs] "
+labels: docs
+
+body:
+  - type: textarea
+    id: improvement
+    attributes:
+      label: What is the improvement or addition?
+      description: A clear and concise description of the documentation update needed.
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why is this improvement needed?
+      description: Explain why this documentation is needed or how it will improve the project.
+    validations:
+      required: true
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+      description: Add any other context or relevant links here.
+    validations:
+      required: false

@@ -1,0 +1,27 @@
+name: 🔧 Configuration Improvement
+description: Suggest improvement to project configurations (e.g., CI/CD, dependencies)
+title: "[Config] "
+labels: config
+
+body:
+  - type: textarea
+    id: configuration
+    attributes:
+      label: What configuration needs updating?
+      description: Describe the specific configuration that needs to be updated.
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why is this update needed?
+      description: Explain why this update is necessary.
+    validations:
+      required: true
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots about the configuration update here.
+    validations:
+      required: false

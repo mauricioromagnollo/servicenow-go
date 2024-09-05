@@ -1,0 +1,27 @@
+name: ❓ Question
+description: Ask a question about this project
+title: "[Question] "
+labels: question
+
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: What is your question?
+      description: A clear and concise question about the project.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Provide any context that may be relevant to the question.
+    validations:
+      required: false
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional context
+      description: Add any additional information or context here.
+    validations:
+      required: false
