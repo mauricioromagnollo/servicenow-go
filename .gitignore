@@ -1,0 +1,38 @@
+# Binaries and Plugins
+app
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin
+testbin/
+__debug*
+github-access-monitoring
+
+# Test Files
+*.test
+
+# Output Files
+*.out
+
+# Kubernetes Generated Files
+!vendor/**/zz_generated.*
+
+# Editors and IDEs
+.idea
+*.swp
+*.swo
+*~
+vendor/
+.vscode/
+tmp/
+
+# Sensitive Files
+*.dont
+*.pem
+.env
+credentials.json
+
+# OSX
+.DS_Store
