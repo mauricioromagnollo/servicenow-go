@@ -6,4 +6,5 @@ type API interface {
 	Post(urlPath string, data []byte) (int, []byte, error)
 	Put(urlPath string, data []byte) (int, []byte, error)
 	Delete(urlPath string) (int, []byte, error)
+	Patch(urlPath string, data []byte) (int, []byte, error)
 }
