@@ -1,0 +1,79 @@
+name: Release
+
+env:
+  GO_VERSION: "1.22.7"
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Get latest tag
+        id: get_tag
+        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0 || echo 'v0.0.0')"
+
+      - name: Get PR labels
+        id: get_labels
+        run: |
+          echo "PR labels: ${{ github.event.pull_request.labels[*].name }}"
+          echo "::set-output name=labels::${{ github.event.pull_request.labels[*].name }}"
+
+      - name: Determine next version
+        id: bump_version
+        run: |
+          TAG=${{ steps.get_tag.outputs.tag }}
+          IFS='.' read -r -a parts <<< "${TAG#v}"
+          MAJOR=${parts[0]}
+          MINOR=${parts[1]}
+          PATCH=${parts[2]}
+
+          # Default to patch bump
+          NEXT_VERSION="v$MAJOR.$MINOR.$((PATCH + 1))"
+
+          # Check PR labels for version bump type
+          if echo "${{ steps.get_labels.outputs.labels }}" | grep -q 'major'; then
+            NEXT_VERSION="v$((MAJOR + 1)).0.0"
+          elif echo "${{ steps.get_labels.outputs.labels }}" | grep -q 'minor'; then
+            NEXT_VERSION="v$MAJOR.$((MINOR + 1)).0"
+          fi
+
+          echo "Next version: $NEXT_VERSION"
+          echo "::set-output name=version::$NEXT_VERSION"
+
+      - name: Configure Git
+        run: |
+          git config user.name "mauricioromagnollo"
+          git config user.email "mauricioromagnollo@gmail.com"
+
+      - name: Create Git tag
+        run: |
+          git tag ${{ steps.bump_version.outputs.version }}
+          git push origin ${{ steps.bump_version.outputs.version }}
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.bump_version.outputs.version }}
+          release_name: Release ${{ steps.bump_version.outputs.version }}
+          body: |
+            Changelog for version ${{ steps.bump_version.outputs.version }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
