@@ -20,7 +20,7 @@ type fakeMessageMock struct {
 }
 
 type APIRequestMock struct {
-	APIRequest
+	apiRequest
 	mock.Mock
 }
 

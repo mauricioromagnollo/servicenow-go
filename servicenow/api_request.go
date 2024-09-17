@@ -11,7 +11,7 @@ import (
 )
 
 // Request is the interface that wraps the basic methods to interact with the ServiceNow API.
-type APIRequest interface {
+type apiRequest interface {
 	Get(urlPath string) (int, []byte, error)
 	Post(urlPath string, data []byte) (int, []byte, error)
 	Put(urlPath string, data []byte) (int, []byte, error)
@@ -24,8 +24,8 @@ type api struct {
 	httpClient *http.Client
 }
 
-// APIRequest creates a new instance of the ServiceNow API.
-func NewAPIRequest(config Config) APIRequest {
+// newAPIRequest creates a new instance of the ServiceNow API request helper.
+func newAPIRequest(config Config) apiRequest {
 	return &api{
 		config:     config,
 		httpClient: http.DefaultClient,
