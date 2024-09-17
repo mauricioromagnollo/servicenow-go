@@ -103,8 +103,13 @@ func (a *api) request(method, urlPath string, body []byte) (int, []byte, error) 
 	}
 
 	if response.Error != nil {
-		return res.StatusCode, b, fmt.Errorf("ServiceNow API error. Message: '%s'. Detail: '%s'", response.Error.Message, response.Error.Detail)
+		return res.StatusCode, b, genericApiError(response.Error)
 	}
 
-	return res.StatusCode, response.Result, nil
+	data, err := json.Marshal(response.Result)
+	if err != nil {
+		return res.StatusCode, nil, err
+	}
+
+	return res.StatusCode, data, nil
 }
